@@ -28,7 +28,7 @@ export function setResumes(payload: Resume[]): Action {
   };
 }
 
-export const resumes = (state: State = initialState, action: Action): State => {
+export const resumes = (state: State = initialState, action: Action): State => {  
   switch (action.type) {
     case SET_RESUME: {
       return {

@@ -1,11 +1,11 @@
-import MainLayOut from "../pattern/Main";
+import MainLayOut from "../layout/Main";
 
 export default function Jobs() {
   return (
     <MainLayOut>
       <main style={{ padding: "1rem 0" }}>
-      <h2>Jobs</h2>
-    </main>
+        <h2>Jobs</h2>
+      </main>
     </MainLayOut>
   );
 }

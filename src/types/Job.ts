@@ -1,4 +1,4 @@
-export interface ResponseTypes {
+export default interface Job {
   title: string;
   company: string;
   salary: number;
@@ -8,9 +8,4 @@ export interface ResponseTypes {
   skills: string[];
   isSalary: boolean;
   id: number;
-}
-
-export type Job = {
-  list: ResponseTypes[],
-  total:number,
 }

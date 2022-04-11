@@ -1,18 +1,18 @@
-import { Job } from "../types/Job";
+import Job from "../types/Job";
 
 export const SET_JOBS = 'SET_JOBS';
 export const SET_ERROR = 'SET_ERROR';
 
 interface State {
-  list: Job[]
+  list : Job[];
 }
 
 export type JobState = {
-   list: Job[]
+  list: Job[];
 }
 
 const initialState = {
-  list: []
+  list: [],
 }
 
 export const setJobAction = (payload: Job[]) => {
@@ -25,7 +25,7 @@ export const setJobAction = (payload: Job[]) => {
 
 type setJobsAction = {
   type: typeof SET_JOBS,
-  payload: Job[]
+  payload: Job[];
 }
 
 type setErrorLoadingAction = {

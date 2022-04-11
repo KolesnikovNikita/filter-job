@@ -1,5 +1,5 @@
-import { FC } from 'react';
-import Avatar from '@mui/material/Avatar';
+import { FC } from "react";
+import Avatar from "@mui/material/Avatar";
 
 type Props = {
   title: string;
@@ -10,18 +10,26 @@ type Props = {
   currency: string;
   skills: string[];
   isSalary: boolean;
-}
+};
 
-const JobItem: FC<Props> = ({title, level, salary, company, avatar, currency, skills, isSalary}) => {
+const JobItem: FC<Props> = ({
+  title,
+  level,
+  salary,
+  company,
+  avatar,
+  currency,
+  skills,
+  isSalary,
+}) => {
   return (
-    <p>
-       <Avatar alt="Remy Sharp" src={avatar} />
+    <>
+      <Avatar alt="Remy Sharp" src={avatar} />
       {title}
       {currency}
       {salary}
-    </p>
-  )
-}
+    </>
+  );
+};
 
 export default JobItem;
-

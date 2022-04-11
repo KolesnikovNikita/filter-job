@@ -6,7 +6,7 @@ import FilterInput from "../components/FilterInput";
 import FieldOfActivity from "../components/FieldOfActivity";
 import SearchArea from "../components/SelectCurrency";
 import Salary from "../components/Salary";
-import MainLayOut from "../pattern/Main";
+import MainLayOut from "../layout/Main";
 import SelectTag from "../components/SelectTag";
 import InputSalary from "../components/SelectSalary";
 import {
@@ -22,7 +22,6 @@ import {
 
 function MainPage() {
   const { jobs } = useJobs();
-  console.log(jobs);
 
   return (
     <MainLayOut>
@@ -36,9 +35,9 @@ function MainPage() {
               <SelectTag />
             </SearchPanel>
             <JobList>
-              {/* {vacancies.map((job) => (
+              {jobs.map((job) => (
                 <JobItem key={job.id} {...job} />
-              ))} */}
+              ))}
             </JobList>
           </Main>
           <SideBar>
