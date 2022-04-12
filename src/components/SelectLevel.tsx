@@ -5,17 +5,11 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import { getResumes } from "../api/fetchJobs";
-import { useDispatch, useSelector } from "react-redux";
 import { Level } from "../types/Resume";
-import { setResumes } from "../init/resumes";
 
 type Props = {
   level: string;
-  setLevel(params: string): void;
-  experience: string;
-  personSkills: string[];
-  handleChangeLevel(props: string): void;
+  handleChangeLevel(params: string): void;
 };
 
 export default function BasicSelect({ handleChangeLevel, level }: Props) {

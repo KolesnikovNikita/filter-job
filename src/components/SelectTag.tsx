@@ -37,30 +37,20 @@ const skills = [
 
 type Props = {
   personSkills: string[];
-  setPersonSkill(params: string[]): void;
-  level: string;
-  experience: string;
+  handleChangePersonSkills(params: string[]): void;
 };
 
 export default function SelectTags({
+  handleChangePersonSkills,
   personSkills,
-  setPersonSkill,
-  level,
-  experience,
 }: Props) {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    getResumes({ tags: personSkills, level, experience }).then((res) =>
-      setResumes(res.data.list)
-    );
-  }, [dispatch, level, experience, personSkills]);
-
   const handleChange = (event: SelectChangeEvent<typeof personSkills>) => {
     const {
       target: { value },
     } = event;
-    setPersonSkill(typeof value === "string" ? value.split(",") : value);
+    handleChangePersonSkills(
+      typeof value === "string" ? value.split(",") : value
+    );
   };
 
   return (

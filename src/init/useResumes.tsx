@@ -5,27 +5,64 @@ import { getResumes } from "../api/fetchJobs";
 import { AppState } from "./rootReducer";
 import { setResumes, ResumeState } from "./resumes";
 
-export type FilterType = {
-  experience?: number;
-  level: keyof typeof Level | "";
-  tags: string[];
-};
-
 type Props = {
-  onUpdateLevel(value: keyof typeof Level): void;
-  onUpdateTags(value: string[]): void;
   search: FilterType;
   list: Resume[];
+  handleChangeLevel(props: string): void;
+  handleChangeExperience(props: string): void;
+  handleChangePersonSkills(props: string[]): void;
+};
+
+export type FilterType = {
+  experience: string;
+  level: keyof typeof Level | "";
+  tags: string[];
 };
 
 export const useResumes = (): Props => {
   const dispatch = useDispatch();
   const [search, setSearch] = useState<FilterType>({
-    tags: [],
     level: "",
+    experience: "",
+    tags: [],
   });
 
   const { list } = useSelector<AppState, ResumeState>((state) => state.resumes);
+
+  const handleChangeLevel = (levelValue: keyof typeof Level | "") => {
+    setSearch({
+      ...search,
+      level: levelValue,
+    });
+    getResumes({
+      level: levelValue,
+      experience: search.experience,
+      tags: search.tags,
+    }).then((res) => dispatch(setResumes(res.data.list)));
+  };
+
+  const handleChangeExperience = (value: string) => {
+    setSearch({
+      ...search,
+      experience: value,
+    });
+    getResumes({
+      experience: value,
+      level: search.level,
+      tags: search.tags,
+    }).then((res) => dispatch(setResumes(res.data.list)));
+  };
+  const handleChangePersonSkills = (values: string[]) => {
+    setSearch({
+      ...search,
+      tags: values,
+    });
+    getResumes({
+      tags: values,
+      level: search.level,
+      experience: search.experience,
+    }).then((res) => dispatch(setResumes(res.data.list)));
+  };
 
   useEffect(() => {
     getResumes().then((res) => {
@@ -33,31 +70,10 @@ export const useResumes = (): Props => {
     });
   }, [dispatch]);
 
-  const onUpdateLevel = (levelValue: keyof typeof Level | "") => {
-    const newSearch = {
-      ...search,
-      level: levelValue,
-    };
-    setSearch(newSearch);
-    getResumes(newSearch).then((res) => {
-      dispatch(setResumes(res.data.list));
-    });
-  };
-
-  const onUpdateTags = (tags: []) => {
-    const newSearch = {
-      ...search,
-      tags: tags,
-    };
-    setSearch(newSearch);
-    getResumes(newSearch).then((res) => {
-      dispatch(setResumes(res.data.list));
-    });
-  };
-
   return {
-    onUpdateTags,
-    onUpdateLevel,
+    handleChangeLevel,
+    handleChangeExperience,
+    handleChangePersonSkills,
     search,
     list,
   };

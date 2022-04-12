@@ -1,35 +1,19 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import { useState } from "react";
-import { getResumes } from "../api/fetchJobs";
-import { useDispatch } from "react-redux";
-import { useEffect } from "react";
-import { setResumes } from "../init/resumes";
 
 type Props = {
-  level: string;
-  setExperience(params: string): void;
   experience: string;
-  personSkills: string[];
+  handleChangeExperience(params: string): void;
 };
 
 export default function InputExperience({
   experience,
-  setExperience,
-  level,
-  personSkills,
+  handleChangeExperience,
 }: Props) {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    getResumes({ experience, level, tags: personSkills }).then((res) =>
-      dispatch(setResumes(res.data.list))
-    );
-  }, [experience, level, personSkills, dispatch]);
-
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setExperience(event.target.value);
+    const experience = event.target.value as string;
+    handleChangeExperience(experience);
   };
 
   return (
