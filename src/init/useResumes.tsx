@@ -26,7 +26,7 @@ export const useResumes = (): Props => {
   });
 
   const { list } = useSelector<AppState, ResumeState>((state) => state.resumes);
-  console.log(list);
+
   useEffect(() => {
     getResumes().then((res) => {
       dispatch(setResumes(res.data.list));

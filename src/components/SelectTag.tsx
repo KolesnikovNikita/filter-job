@@ -1,28 +1,15 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { Theme, useTheme } from '@mui/material/styles';
-import FormControl from '@mui/material/FormControl';
-import Chip from '@mui/material/Chip';
-import OutlinedInput from '@mui/material/OutlinedInput';
+import * as React from "react";
+import { useEffect } from "react";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import ListItemText from "@mui/material/ListItemText";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Checkbox from "@mui/material/Checkbox";
 import { getResumes } from "../api/fetchJobs";
-import { useDispatch } from "react-redux";
-
-const names = [
-  'React',
-  'Mysql',
-  'Ruby on Rails',
-  'Unix',
-  'JavaScript',
-  'Html',
-  'CSS',
-  'Redux',
-  'PHP',
-  'Typescript',
-  'Ruby',
-];
+import { setResumes } from "../init/resumes";
+import { useDispatch, useSelector } from "react-redux";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -35,85 +22,69 @@ const MenuProps = {
   },
 };
 
-function getStyles(name: string, personName: readonly string[], theme: Theme) {
-  return {
-    fontWeight:
-      personName.indexOf(name) === -1
-        ? theme.typography.fontWeightRegular
-        : theme.typography.fontWeightMedium,
-  };
-}
+const skills = [
+  "React",
+  "Mysql",
+  "Ruby",
+  "Unix",
+  "PHP",
+  "JavaScript",
+  "Html",
+  "Css",
+  "Redux",
+  "Typescript",
+];
 
+type Props = {
+  personSkills: string[];
+  setPersonSkill(params: string[]): void;
+  level: string;
+  experience: string;
+};
 
-
-export default function BasicSelect() {
-  const [tag, setTag] = React.useState<string[]>([]);
-  const [personName, setPersonName] = React.useState<string[]>([]);
-  
+export default function SelectTags({
+  personSkills,
+  setPersonSkill,
+  level,
+  experience,
+}: Props) {
   const dispatch = useDispatch();
-  const theme = useTheme();
 
-  const handleChange = (event: SelectChangeEvent<typeof tag>) => {
+  useEffect(() => {
+    getResumes({ tags: personSkills, level, experience }).then((res) =>
+      setResumes(res.data.list)
+    );
+  }, [dispatch, level, experience, personSkills]);
+
+  const handleChange = (event: SelectChangeEvent<typeof personSkills>) => {
     const {
       target: { value },
     } = event;
-    const tagValue = typeof value === 'string' ? value.split(',') : value;
-  
-    setTag(
-      tagValue
-    );
-    getResumes({tags: tagValue}).then(res => dispatch({
-      type: "SET_RESUME",
-      payload: res.data,
-    }))
-  };
-
-  const handleToggle = (event: SelectChangeEvent<typeof personName>) => {
-    const {
-      target: { value },
-    } = event;
-    setPersonName(
-      // On autofill we get a stringified value.
-      typeof value === 'string' ? value.split(',') : value,
-    );
+    setPersonSkill(typeof value === "string" ? value.split(",") : value);
   };
 
   return (
-    <Box sx={{ minWidth: 120 }}>
-        <div>
-        <br/>
+    <div>
       <FormControl sx={{ m: 1, width: 300 }}>
-        <InputLabel id="demo-multiple-chip-label">Skills</InputLabel>
+        <InputLabel id="demo-multiple-checkbox-label">Tag</InputLabel>
         <Select
-          labelId="demo-multiple-chip-label"
-          id="demo-multiple-chip"
+          labelId="demo-multiple-checkbox-label"
+          id="demo-multiple-checkbox"
           multiple
-          value={personName}
-          onChange={handleToggle}
-          input={<OutlinedInput id="select-multiple-chip" label="Skills" />}
-          renderValue={(selected) => (
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-              {selected.map((value) => (
-                <Chip key={value} label={value} />
-              ))}
-            </Box>
-          )}
+          value={personSkills}
+          onChange={handleChange}
+          input={<OutlinedInput label="Tag" />}
+          renderValue={(selected) => selected.join(", ")}
           MenuProps={MenuProps}
         >
-          {names.map((name) => (
-            <MenuItem
-              key={name}
-              value={name}
-              style={getStyles(name, personName, theme)}
-            >
-              {name}
+          {skills.map((name) => (
+            <MenuItem key={name} value={name}>
+              <Checkbox checked={personSkills.indexOf(name) > -1} />
+              <ListItemText primary={name} />
             </MenuItem>
           ))}
         </Select>
       </FormControl>
-    </div>      
-    </Box>
+    </div>
   );
 }
-
-

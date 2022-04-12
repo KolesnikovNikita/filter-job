@@ -5,28 +5,28 @@ import { useState } from "react";
 import { getResumes } from "../api/fetchJobs";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
+import { setResumes } from "../init/resumes";
 
 type Props = {
   level: string;
   setExperience(params: string): void;
   experience: string;
+  personSkills: string[];
 };
 
 export default function InputExperience({
   experience,
   setExperience,
   level,
+  personSkills,
 }: Props) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    getResumes({ experience: experience, level }).then((res) =>
-      dispatch({
-        type: "SET_RESUME",
-        payload: res.data,
-      })
+    getResumes({ experience, level, tags: personSkills }).then((res) =>
+      dispatch(setResumes(res.data.list))
     );
-  }, [experience, dispatch]);
+  }, [experience, level, personSkills, dispatch]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setExperience(event.target.value);

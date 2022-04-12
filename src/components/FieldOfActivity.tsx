@@ -35,7 +35,7 @@ export default function CheckboxesGroup() {
     }).then((res) =>
       dispatch({
         type: "SET_RESUME",
-        payload: res.data,
+        payload: res.data.list,
       })
     );
   };

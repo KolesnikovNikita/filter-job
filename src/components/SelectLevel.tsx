@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useEffect } from "react";
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -7,25 +8,20 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { getResumes } from "../api/fetchJobs";
 import { useDispatch, useSelector } from "react-redux";
 import { Level } from "../types/Resume";
+import { setResumes } from "../init/resumes";
 
 type Props = {
   level: string;
   setLevel(params: string): void;
   experience: string;
+  personSkills: string[];
+  handleChangeLevel(props: string): void;
 };
 
-export default function BasicSelect({ level, setLevel, experience }: Props) {
-  const dispatch = useDispatch();
-
+export default function BasicSelect({ handleChangeLevel, level }: Props) {
   const handleChange = (event: SelectChangeEvent) => {
     const level = event.target.value as string;
-    setLevel(level);
-    getResumes({ level: level, experience }).then((res) =>
-      dispatch({
-        type: "SET_RESUME",
-        payload: res.data,
-      })
-    );
+    handleChangeLevel(level);
   };
 
   return (

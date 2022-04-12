@@ -7,7 +7,6 @@ import FieldOfActivity from "../components/FieldOfActivity";
 import SearchArea from "../components/SelectCurrency";
 import Salary from "../components/Salary";
 import MainLayOut from "../layout/Main";
-import SelectTag from "../components/SelectTag";
 import InputSalary from "../components/SelectSalary";
 import {
   Content,
@@ -32,7 +31,6 @@ function MainPage() {
               <SearchInput />
               <FilterInput />
               <InputSalary />
-              <SelectTag />
             </SearchPanel>
             <JobList>
               {jobs.map((job) => (
