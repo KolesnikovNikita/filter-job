@@ -1,4 +1,8 @@
-import { FC } from "react";
+import * as React from "react";
+import Box from "@mui/material/Box";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Typography from "@mui/material/Typography";
 import Avatar from "@mui/material/Avatar";
 
 type Props = {
@@ -6,30 +10,52 @@ type Props = {
   company: string;
   salary: number;
   avatar: string;
-  level: string;
   currency: string;
   skills: string[];
-  isSalary: boolean;
+  activity: string[];
+  level: string;
 };
 
-const JobItem: FC<Props> = ({
+export default function VacancyItem({
+  activity,
   title,
-  level,
-  salary,
   company,
+  salary,
   avatar,
   currency,
   skills,
-  isSalary,
-}) => {
+  level,
+}: Props) {
   return (
-    <>
-      <Avatar alt="Remy Sharp" src={avatar} />
-      {title}
-      {currency}
-      {salary}
-    </>
+    <Card sx={{ minWidth: 275 }}>
+      <CardContent>
+        <Avatar
+          alt="Company avatar"
+          src={avatar}
+          sx={{ width: 56, height: 56 }}
+        />
+        <Typography variant="h4" component="div">
+          {company}
+        </Typography>
+        <Typography variant="h5" component="div">
+          {title}
+        </Typography>
+        <Typography variant="subtitle1">Salary: {salary}</Typography>
+        <Typography variant="subtitle1">Level: {level}</Typography>
+        <Typography variant="subtitle2">Currency: {currency}</Typography>
+        <Typography variant="body2">
+          Skills:
+          {skills.map((skill) => (
+            <React.Fragment key={skill}> {skill} </React.Fragment>
+          ))}
+        </Typography>
+        <Typography variant="body2">
+          Activities:
+          {activity.map((active) => (
+            <React.Fragment key={active}> {active} </React.Fragment>
+          ))}
+        </Typography>
+      </CardContent>
+    </Card>
   );
-};
-
-export default JobItem;
+}

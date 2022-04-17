@@ -8,4 +8,11 @@ export default interface Job {
   skills: string[];
   isSalary: boolean;
   id: number;
+  activity: string[];
+}
+
+export enum Currency {
+  RUB = "RUB",
+  EUR = "EUR",
+  USD = "USD",
 }

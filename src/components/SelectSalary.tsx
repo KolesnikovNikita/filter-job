@@ -1,36 +1,35 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import { useState } from "react";
-import { getJobs } from "../api/fetchJobs";
-import { useDispatch } from "react-redux";
-import { useEffect } from 'react';
+import * as React from "react";
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
 
-export default function InputSalary() {
-  const [salary, setSalary] = useState("");
-  const dispatch = useDispatch();
-  
-  useEffect(() => {
-    getJobs({salary}).then(res => dispatch({
-      type: "SET_RESUME",
-      payload: res.data,
-    }))
-  },[salary, dispatch])
-  
+type Props = {
+  salary: string;
+  handleChangeSalary(params: string): void;
+};
+
+export default function InputSalary({ salary, handleChangeSalary }: Props) {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSalary(event.target.value);
+    const level = event.target.value as string;
+    handleChangeSalary(level);
   };
 
   return (
     <Box
       component="form"
       sx={{
-        '& > :not(style)': { m: 1, width: '25ch' },
+        "& > :not(style)": { m: 1, width: "25ch" },
       }}
       noValidate
       autoComplete="off"
     >
-      <TextField onChange={handleChange} type="number" id="outlined-basic" label="Salary..." variant="outlined" />
+      <TextField
+        value={salary}
+        onChange={handleChange}
+        type="number"
+        id="outlined-basic"
+        label="Salary..."
+        variant="outlined"
+      />
     </Box>
   );
 }

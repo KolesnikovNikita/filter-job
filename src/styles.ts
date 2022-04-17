@@ -56,7 +56,7 @@ export const SideBar = styled.div`
 `
 
 export const SearchContainer = styled.div`
-display: flex;
+
 `
 
 export const HeaderContainer = styled.div`

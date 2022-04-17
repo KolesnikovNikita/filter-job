@@ -1,25 +1,20 @@
 import * as React from "react";
-import { useEffect } from "react";
 import MenuItem from "@mui/material/MenuItem";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import { getJobs } from "../api/fetchJobs";
-import { useDispatch } from "react-redux";
+import { Currency } from "../types/Job";
 
-export default function Money(): JSX.Element {
-  const [currency, setCurrency] = React.useState<string>("RUB");
-  const dispatch = useDispatch();
+type Props = {
+  handleChangeCurrency(params: string): void;
+  currency: string;
+};
 
-  useEffect(() => {
-    getJobs({ currency }).then((res) =>
-      dispatch({
-        type: "SET_RESUME",
-        payload: res.data.list,
-      })
-    );
-  }, [currency, dispatch]);
-
+export default function SelectCurrency({
+  handleChangeCurrency,
+  currency,
+}: Props): JSX.Element {
   const handleChange = (event: SelectChangeEvent) => {
-    setCurrency(event.target.value as string);
+    const value = event.target.value as string;
+    handleChangeCurrency(value);
   };
 
   return (
@@ -30,9 +25,9 @@ export default function Money(): JSX.Element {
       label="Type"
       onChange={handleChange}
     >
-      <MenuItem value="USD">USD</MenuItem>
-      <MenuItem value="RUB">RUB</MenuItem>
-      <MenuItem value="EUR">EUR</MenuItem>
+      <MenuItem value={Currency.USD}>{Currency.USD}</MenuItem>
+      <MenuItem value={Currency.RUB}>{Currency.RUB}</MenuItem>
+      <MenuItem value={Currency.EUR}>{Currency.EUR}</MenuItem>
     </Select>
   );
 }
