@@ -16,7 +16,7 @@ type Props = {
   handleChangeQualification(params: string): void;
   handleSelectActivity(params: string[]): void;
   jobs: Job[];
-  filter: FilterType;
+  list: FilterType;
 }
 
 export type FilterType = {
@@ -29,7 +29,8 @@ export type FilterType = {
 };
 
 export const useJobs = (): Props => {
-  const [ filter, setFilter ] = useState<FilterType>({
+  const dispatch = useDispatch();
+  const [ search, setFilter ] = useState<FilterType>({
     activity:[],
     currency: "",
     salary: "",
@@ -37,90 +38,69 @@ export const useJobs = (): Props => {
     level: "junior",
     skills: [],
   })
-  const dispatch = useDispatch();
-  const { list } = useSelector<AppState,JobState>(state => state.jobs);
-
-  const handleSelectActivity = (values: string[]) => {
-    setFilter({
-      ...filter,
-      activity: values
-    })
-    getJobs({activity: values, currency: filter.currency, skills: filter.skills, is_salary: filter.is_salary, salary: filter.salary, level: filter.level}).then(res => dispatch(setJobAction(res.data.list)))
-  };
-
-  const handleChangeSkills = (values: string[]) => {
-    setFilter({
-      ...filter,
-      skills: values
-    });
-    getJobs({activity: filter.activity, currency: filter.currency, skills: values, is_salary: filter.is_salary, salary: filter.salary, level: filter.level}).then(res => dispatch(setJobAction(res.data.list)))
-  }
-
-  const handleChangeShowSalary = (value: boolean) => {
-    setFilter({
-      ...filter,
-      is_salary: value
-    });
-    getJobs({
-      activity: filter.activity,
-      is_salary: value,
-      skills: filter.skills,
-      salary: filter.salary,
-      currency: filter.currency,
-      level: filter.level,
-    }).then((res) => dispatch(setJobAction(res.data.list)));
-  };
-
-  const handleChangeSalary = (value: string) => {
-    setFilter({
-      ...filter,
-      salary: value
-    });
-    getJobs({
-      activity: filter.activity,
-      is_salary: filter.is_salary,
-      skills: filter.skills,
-      salary: value,
-      currency: filter.currency,
-      level: filter.level,
-    }).then((res) => dispatch(setJobAction(res.data.list)));
-  };
-
-  const handleChangeCurrency = (value: keyof typeof Currency | "") => {
-    setFilter({
-      ...filter,
-      currency: value
-    });
-    getJobs({
-      activity: filter.activity,
-      is_salary: filter.is_salary,
-      skills: filter.skills,
-      salary: filter.salary,
-      currency: value,
-      level: filter.level,
-    }).then((res) => dispatch(setJobAction(res.data.list)));
-  };
-  
-  const handleChangeQualification = (value: string) => {
-    setFilter({
-      ...filter,
-      level: value
-    });
-    getJobs({
-      activity: filter.activity,
-      is_salary: filter.is_salary,
-      skills: filter.skills,
-      salary: filter.salary,
-      currency: filter.currency,
-      level: value,
-    }).then((res) => dispatch(setJobAction(res.data.list)));
-  };
-
   React.useEffect(() => {
     getJobs().then(res => {
       dispatch(setJobAction(res.data.list))
     })
   }, [dispatch])
+  
+  const { list } = useSelector<AppState,JobState>(state => state.jobs);
+
+  const handleSelectActivity = (values: string[]) => {
+    const newSearch = {
+      ...search,
+      activity: values
+    }
+    setFilter(newSearch)
+    getJobs(newSearch).then(res => dispatch(setJobAction(res.data.list)))
+  };
+
+  const handleChangeSkills = (values: string[]) => {
+    const newSearch = {
+      ...search,
+      skills: values
+    }
+    setFilter(newSearch);
+    getJobs(newSearch)
+  }
+
+  const handleChangeShowSalary = (value: boolean) => {
+    const newSearch = {
+      ...search,
+      is_salary: value
+    }
+    setFilter(newSearch);
+    getJobs(newSearch).then((res) => dispatch(setJobAction(res.data.list)));
+  };
+
+  const handleChangeSalary = (value: string) => {
+    const newSearch = {
+      ...search,
+      salary: value
+    }
+    setFilter(newSearch);
+    getJobs(newSearch).then((res) => dispatch(setJobAction(res.data.list)));
+  };
+
+  const handleChangeCurrency = (value: keyof typeof Currency | "") => {
+    const newSearch = {
+      ...search,
+      currency: value
+    }
+    setFilter(newSearch);
+    getJobs(newSearch).then((res) => dispatch(setJobAction(res.data.list)));
+  };
+  
+  const handleChangeQualification = (value: string) => {
+    const newSearch = {
+      ...search,
+      level: value
+    }
+    setFilter(newSearch);
+    getJobs(newSearch).then((res) => dispatch(setJobAction(res.data.list)));
+  };
+
+ 
   return {
     jobs: list,
     handleChangeSkills,
@@ -129,7 +109,6 @@ export const useJobs = (): Props => {
     handleChangeCurrency,
     handleChangeQualification,
     handleSelectActivity,
-    filter,
+    list: search,
   }
-  
 }

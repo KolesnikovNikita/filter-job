@@ -5,7 +5,6 @@ import { Provider } from "react-redux";
 import { store } from "./init/store";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import MainPage from "./pages/App";
-import Jobs from "./pages/Jobs";
 import Specialist from "./pages/Specialist";
 import Salaries from "./pages/Salaries";
 import Companies from "./pages/Companies";
@@ -16,7 +15,6 @@ ReactDOM.render(
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<MainPage />} />
-          <Route path="jobs" element={<Jobs />} />
           <Route path="specialist" element={<Specialist />} />
           <Route path="companies" element={<Companies />} />
           <Route path="salaries" element={<Salaries />} />

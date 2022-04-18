@@ -26,49 +26,39 @@ export const useResumes = (): Props => {
     experience: "",
     tags: [],
   });
-
-  const { list } = useSelector<AppState, ResumeState>((state) => state.resumes);
-
-  const handleChangeLevel = (levelValue: keyof typeof Level | "") => {
-    setSearch({
-      ...search,
-      level: levelValue,
-    });
-    getResumes({
-      level: levelValue,
-      experience: search.experience,
-      tags: search.tags,
-    }).then((res) => dispatch(setResumes(res.data.list)));
-  };
-
-  const handleChangeExperience = (value: string) => {
-    setSearch({
-      ...search,
-      experience: value,
-    });
-    getResumes({
-      experience: value,
-      level: search.level,
-      tags: search.tags,
-    }).then((res) => dispatch(setResumes(res.data.list)));
-  };
-  const handleChangePersonSkills = (values: string[]) => {
-    setSearch({
-      ...search,
-      tags: values,
-    });
-    getResumes({
-      tags: values,
-      level: search.level,
-      experience: search.experience,
-    }).then((res) => dispatch(setResumes(res.data.list)));
-  };
-
   useEffect(() => {
     getResumes().then((res) => {
       dispatch(setResumes(res.data.list));
     });
   }, [dispatch]);
+
+  const { list } = useSelector<AppState, ResumeState>((state) => state.resumes);
+
+  const handleChangeLevel = (levelValue: keyof typeof Level | "") => {
+    const newSearch = {
+      ...search,
+      level: levelValue,
+    };
+    setSearch(newSearch);
+    getResumes(newSearch).then((res) => dispatch(setResumes(res.data.list)));
+  };
+
+  const handleChangeExperience = (value: string) => {
+    const newSearch = {
+      ...search,
+      experience: value,
+    };
+    setSearch(newSearch);
+    getResumes(newSearch).then((res) => dispatch(setResumes(res.data.list)));
+  };
+  const handleChangePersonSkills = (values: string[]) => {
+    const newSearch = {
+      ...search,
+      tags: values,
+    };
+    setSearch(newSearch);
+    getResumes(newSearch).then((res) => dispatch(setResumes(res.data.list)));
+  };
 
   return {
     handleChangeLevel,
