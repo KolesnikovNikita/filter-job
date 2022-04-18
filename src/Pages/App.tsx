@@ -20,7 +20,7 @@ import SelectSkills from "../components/SelectSkills";
 function MainPage() {
   const {
     jobs,
-    filter,
+    list,
     handleChangeCurrency,
     handleChangeQualification,
     handleChangeSalary,
@@ -44,23 +44,23 @@ function MainPage() {
             <FieldOfActivity handleSelectActivity={handleSelectActivity} />
             <SelectCurrency
               handleChangeCurrency={handleChangeCurrency}
-              currency={filter.currency}
+              currency={list.currency}
             />
             <InputSalary
               handleChangeSalary={handleChangeSalary}
-              salary={filter.salary}
+              salary={list.salary}
             />
             <ShowSalary
               handleChangeShowSalary={handleChangeShowSalary}
-              isShowSalary={filter.is_salary}
+              isShowSalary={list.is_salary}
             />
             <SelectQualification
-              qualification={filter.level}
+              qualification={list.level}
               handleChangeQualification={handleChangeQualification}
             />
             <SelectSkills
               handleChangeSkills={handleChangeSkills}
-              personSkills={filter.skills}
+              personSkills={list.skills}
             />
           </SideBar>
         </Content>

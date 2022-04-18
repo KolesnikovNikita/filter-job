@@ -4,26 +4,26 @@ import Job from '../types/Job';
 import { FilterType } from '../init/useResumes';
 import Resume from '../types/Resume';
 
-type ResResumesType = {
+type Resumes = {
   list: Resume[];
 }
 
 export const getResumes = (
   queryParams : {} = {}
-): AxiosPromise<ResResumesType> => {
+): AxiosPromise<Resumes> => {
   return axios.get('/resumes', {
     params: queryParams
   });
 };
 
-type ResJobType = {
+type Jobs = {
   list : Job[];
   total: number;
 }
 
 export const getJobs = (
   queryParams : {} = {}
-): AxiosPromise<ResJobType> => {
+): AxiosPromise<Jobs> => {
   return axios.get('/jobs', {
     params: queryParams
   });
